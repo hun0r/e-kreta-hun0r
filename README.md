@@ -6,4 +6,4 @@ e-Kréta python API kezelő
  - +type annotation
  - rendszerezési egységek
 ### hogy lehet segíteni
- - request-ekhez response tipusokat formátumokat küldesz
+ - request-ekhez response tipusokat formátumokat küldesz (issue-n keresztül)
