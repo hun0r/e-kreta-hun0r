@@ -2,7 +2,7 @@
 e-Kréta python API handler
 ### coming in future!
  - ill make dataclasses when i got enought info about the kréta system
- - + type annotation
+ - type annotation
  - groups like schools or classes
 ### contributing
  - submit formats through this [issue template](https://github.com/hun0r/e-kreta/issues/new?assignees=hun0r&labels=&projects=&template=form%C3%A1tum.md&title=%5Brequest+neve%5D)
