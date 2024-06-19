@@ -1,6 +1,5 @@
 # e-kreta
 e-Kréta python API handler
-
 ### coming in future!
  - ill make dataclasses when i got enought info about the kréta system
  - + type annotation
