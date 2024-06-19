@@ -19,6 +19,9 @@ class Session:
 
     @classmethod
     def login(cls, userName: str|int, password: str|int , klik: str|int) -> "Session":
+        if isinstance(userName,int): userName=str(userName)
+        if isinstance(pwd,int) or len(pwd)==8: pwd=str(pwd)[:4]+"-"+str(pwd)[4:6]+"-"+str(pwd)[6:]
+        if isinstance(klik,int) or not klik.startswith("klik"): klik="klik"+str(klik)
         nonce = IdpApiV1.getNonce()
         login_info = IdpApiV1.login(userName, password, klik, nonce)
         return cls(**login_info)
