@@ -2,7 +2,9 @@
 e-Kréta python API handler
 ## docs 
 ### install 
-`pip install e_kreta`
+```cmd
+pip install e_kreta
+```
 ## coming in future!
  - ill make dataclasses when i got enought info about the kréta system
  - type annotation
