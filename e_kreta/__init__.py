@@ -1,2 +1,2 @@
 # Initialize the package
-from . import kreta_api
+from .api import kreta_api
