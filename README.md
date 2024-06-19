@@ -3,7 +3,7 @@ e-Kréta python API handler
 ## docs 
 ### install 
 ```cmd
-pip install e_kreta
+pip install e_kreta_hun0r
 ```
 ## coming in future!
  - ill make dataclasses when i got enought info about the kréta system
