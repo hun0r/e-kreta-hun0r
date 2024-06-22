@@ -1,30 +1,54 @@
 import jwt
 import requests
+import warnings
 from .idp_api import IdpApiV1
 from ..config import AUTH_HEADER, URL
-from ..utils.requests_handler import RequestsHandler
+from ..utils import RequestsHandler
 
 class Session:
-    def __init__(self, access_token, refresh_token, *_, **__) -> None:
+    def __init__(self, access_token, refresh_token, auto_revoke, *_, **__) -> None:
         self.access_token = access_token
         self.refresh_token = refresh_token
         self.headers = AUTH_HEADER.copy()
         self.headers["Authorization"] = self.headers["Authorization"].format(self.access_token)
+        self.auto_revoke = auto_revoke
 
-    def __del__(self) -> None:
-        IdpApiV1.revokeRefreshToken(self.refresh_token)
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.close()
+
+    def __del__(self):
+        if self.auto_revoke:
+            self.close()
+            warnings.warn(
+                "Your token got automatically revoked. If u want to save the token set the 'auto_revoke' to False",
+            )
 
     def close(self) -> None:
-        IdpApiV1.revokeRefreshToken(self.refresh_token)
+        try:
+            IdpApiV1.revokeRefreshToken(self.refresh_token)
+            self.refresh_token = None
+            self.access_token = None
+            self.headers = AUTH_HEADER.copy()
+        except: pass
 
     @classmethod
-    def login(cls, userName: str|int, password: str|int , klik: str|int) -> "Session":
-        if isinstance(userName,int): userName=str(userName)
-        if isinstance(pwd,int) or len(pwd)==8: pwd=str(pwd)[:4]+"-"+str(pwd)[4:6]+"-"+str(pwd)[6:]
-        if isinstance(klik,int) or not klik.startswith("klik"): klik="klik"+str(klik)
+    def login(cls, userName: str|int, password: str|int , klik: str|int, *, auto_revoke: bool = True, bypass_format: False) -> "Session":
+        if not bypass_format:
+            try:
+                _userName = "".join(filter(str.isdigit, str(userName)))
+                _password = "{}{}{}{}-{}{}-{}{}".format(filter(str.isdigit, str(password)))
+                _klik = f"klik{"".join(filter(str.isdigit, str(klik)))}"
+            except: 
+                warnings.warn("invalid format: please consider enabeling bypass_format. (some times the format is not followed)")
+                _userName = userName
+                _password = password
+                _klik = klik
         nonce = IdpApiV1.getNonce()
-        login_info = IdpApiV1.login(userName, password, klik, nonce)
-        return cls(**login_info)
+        login_info = IdpApiV1.login(_userName, _password, _klik, nonce)
+        return cls(**login_info, auto_revoke = auto_revoke)
     
     def get_klik(self) -> str:
         return jwt.decode(

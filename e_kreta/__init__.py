@@ -1,2 +1,4 @@
 # Initialize the package
-from .api import kreta_api
+import api
+import utils
+import config

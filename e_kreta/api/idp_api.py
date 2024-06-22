@@ -1,5 +1,5 @@
-from ..utils.encoder import KRETAEncoder
-from ..utils.requests_handler import RequestsHandler
+from ..utils import KRETAEncoder
+from ..utils import RequestsHandler
 from ..config import HEADERS, proxies
 
 class IdpApiV1:
