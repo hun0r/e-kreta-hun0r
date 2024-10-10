@@ -32,22 +32,22 @@ class Session:
             self.refresh_token = None
             self.access_token = None
             self.headers = AUTH_HEADER.copy()
-        except: pass
+        except Exception: 
+            pass
 
     @classmethod
     def login(cls, userName: str|int, password: str|int , klik: str|int, *, auto_revoke: bool = True, bypass_format: False) -> "Session":
         if not bypass_format:
             try:
                 _userName = "".join(filter(str.isdigit, str(userName)))
-                _password = "{}{}{}{}-{}{}-{}{}".format(filter(str.isdigit, str(password)))
+                _password = "{}{}{}{}-{}{}-{}{}".format(*filter(str.isdigit, str(password)))
                 _klik = f"klik{"".join(filter(str.isdigit, str(klik)))}"
-            except: 
+            except Exception: 
                 warnings.warn("invalid format: please consider enabeling bypass_format. (some times the format is not followed)")
                 _userName = userName
                 _password = password
                 _klik = klik
-        nonce = IdpApiV1.getNonce()
-        login_info = IdpApiV1.login(_userName, _password, _klik, nonce)
+        login_info = IdpApiV1.login(_userName, _password, _klik)
         return cls(**login_info, auto_revoke = auto_revoke)
     
     def get_klik(self) -> str:
