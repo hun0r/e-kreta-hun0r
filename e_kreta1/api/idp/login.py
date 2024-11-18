@@ -17,7 +17,7 @@ InstituteCode={institute_code}&\
 loginType=InstituteLogin&\
 __RequestVerificationToken={__RequestVerificationToken}'
     headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/x-www-form-urlencoded'
     }
     url = "https://idp.e-kreta.hu/account/login"
     response1 = session.post(url, data=payload, headers=headers)  # noqa: F841
@@ -30,7 +30,7 @@ __RequestVerificationToken={__RequestVerificationToken}'
         .partition("code=")[2]\
         .partition("&")[0]
     if not code: 
-        raise Exception("Error")
+        raise Exception("kreta said fuck u, sorry")
     data = {
         "code": code,
         "code_verifier": "DSpuqj_HhDX4wzQIbtn8lr8NLE5wEi1iVLMtMK0jY6c",
